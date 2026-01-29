@@ -20,9 +20,18 @@
 
     /* Reset & Global */
     *{box-sizing:border-box;margin:0;padding:0}
-    html,body{scroll-behavior:smooth;overflow-x:hidden}
-    body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,var(--bg),#eef3fb);color:var(--text);-webkit-font-smoothing:antialiased}
+    /* Keep single vertical scrollbar and avoid overscroll from inner elements */
+    html,body{scroll-behavior:smooth;overflow-x:hidden;height:100%;overscroll-behavior-y:contain}
+    /* Ensure footer is visible at page end by adding bottom padding */
+    body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,var(--bg),#eef3fb);color:var(--text);-webkit-font-smoothing:antialiased;padding-bottom:160px}
     a{color:var(--accent1);text-decoration:none}
+
+    /* Slim / modern scrollbar styling */
+    *{scrollbar-width:thin;scrollbar-color:rgba(0,119,255,0.5) rgba(15,23,36,0.03)}
+    ::-webkit-scrollbar{width:10px;height:10px}
+    ::-webkit-scrollbar-track{background:rgba(15,23,36,0.03);border-radius:10px}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,rgba(0,119,255,0.9),rgba(0,212,255,0.9));border-radius:10px;transition:background .18s ease}
+    ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,rgba(0,119,255,1),rgba(0,212,255,1))} 
     img{max-width:100%;display:block}
     section{padding:64px 20px}
     .container{max-width:1100px;margin:0 auto}
@@ -30,14 +39,20 @@
     p{color:var(--muted);margin-bottom:14px}
 
     /* Header */
-    header{position:sticky;top:0;z-index:60;background:transparent;transition:background .25s ease,box-shadow .25s ease,transform .2s ease,border-radius .25s ease;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}
-    header.scrolled{background:rgba(255,255,255,0.88);box-shadow:0 10px 30px rgba(2,6,23,0.08);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom-left-radius:14px;border-bottom-right-radius:14px;padding:10px 0;margin-bottom:18px}
+    /* Visible background by default for improved contrast and readability */
+    header{position:sticky;top:0;left:0;z-index:60;width:100%;background:rgba(255,255,255,0.92);transition:background .28s ease,box-shadow .28s ease,transform .42s cubic-bezier(.2,.9,.2,1),opacity .32s ease,border-radius .25s ease;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:8px 16px;border-bottom-left-radius:10px;border-bottom-right-radius:10px}
+    /* Keep header sticky without layout shifts — darker background for visibility when scrolled */
+    header.scrolled{background:rgba(15,23,36,0.98);box-shadow:0 14px 44px rgba(2,6,23,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-left-radius:16px;border-bottom-right-radius:16px;padding:8px 18px}
+    /* Hide header when scrolling down (auto-hide); shown again when scrolling up */
+    header.hidden{transform:translateY(-100%);opacity:0;pointer-events:none;box-shadow:none}
+    header.scrolled nav a{color:#f8fafc}
+    header.scrolled .social a{color:#f8fafc;border-color:rgba(255,255,255,0.04)}
     .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;box-shadow:var(--shadow)}
     nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600}
     nav a:hover{background:var(--glass);color:var(--text)}
-    header.scrolled nav a{color:var(--text)}
+    header.scrolled nav a{color:#f8fafc}
     header.scrolled .social a{color:var(--text);border-color:rgba(15,23,36,0.04)}
 
     /* Social */
@@ -110,7 +125,7 @@
     .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999;opacity:0;pointer-events:none;transition:opacity .18s ease}
     .modal.show{opacity:1;pointer-events:auto}
     .modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,0.5);backdrop-filter:blur(3px)}
-    .modal-card{position:relative;max-width:900px;width:100%;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#fff,#fafcff);box-shadow:0 30px 80px rgba(2,6,23,0.3);display:flex;gap:0}
+    .modal-card{position:relative;max-width:900px;width:100%;border-radius:12px;background:linear-gradient(180deg,#fff,#fafcff);box-shadow:0 30px 80px rgba(2,6,23,0.3);display:flex;gap:0;max-height:calc(100vh - 48px);overflow:auto;-webkit-overflow-scrolling:touch} 
     .modal-media{flex:1;min-width:260px;max-height:520px;overflow:hidden}
     .modal-media img{width:100%;height:100%;object-fit:cover;display:block}
     .modal-body{flex:1;padding:20px}
@@ -148,7 +163,8 @@
   
 
     /* Footer */
-    footer{margin-top:36px;color:var(--muted);font-size:0.95rem;text-align:center}
+    footer{margin-top:36px;color:var(--muted);font-size:0.95rem;text-align:center;position:relative;z-index:70;padding:28px 20px;background:transparent;border-top:1px solid rgba(15,23,36,0.03)}
+    @media(max-width:700px){body{padding-bottom:200px}footer{padding:20px 14px}}
 
     /* Utilities & Animations */
     .fade-in{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
@@ -392,16 +408,8 @@
 
   <!-- Footer -->
   <footer class="fade-in">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div class="container" style="text-align:center">
       <div style="color:var(--muted)">&copy; 2026 Naomi Joy Kariuki</div>
-      <div class="social">
-        <a href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.48 1 4.98 2.12 4.98 3.5zM0.5 8h4v12h-4V8zm8 0h3.4v1.64h.06c.48-.9 1.66-1.85 3.42-1.85 3.66 0 4.33 2.41 4.33 5.54V20H21v-6.05c0-1.44 0-3.3-2.01-3.3-2 0-2.34 1.58-2.34 3.21V20H8.5V8z"/></svg>
-        </a>
-        <a href="https://twitter.com/your-handle" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 7v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
-        </a>
-      </div>
     </div>
   </footer>
 
@@ -450,17 +458,36 @@
       faders.forEach(f => observer.observe(f));
     })();
 
-    // Sticky header --> add visible background when user scrolls
+    // Sticky header: auto-hide when scrolling down, reveal (sticky) when scrolling up
     (function(){
       const header = document.querySelector('header');
-      const threshold = 24; // px
-      function handleScroll(){
-        if(window.scrollY > threshold) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
+      let lastY = window.scrollY;
+      let ticking = false;
+      const scrolledThreshold = 24;
+      const hideThreshold = 80; // only hide after user scrolls a bit
+
+      function onScroll(){
+        const y = window.scrollY;
+        // toggle scrolled background
+        if (y > scrolledThreshold) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+        // auto-hide on scroll down, reveal on scroll up
+        if (y > lastY && y > hideThreshold) {
+          header.classList.add('hidden');
+        } else if (y < lastY) {
+          header.classList.remove('hidden');
+        }
+        lastY = Math.max(0, y);
       }
-      window.addEventListener('scroll', handleScroll, {passive:true});
+
+      window.addEventListener('scroll', function(){
+        if(!ticking){
+          requestAnimationFrame(function(){ onScroll(); ticking = false; });
+          ticking = true;
+        }
+      }, {passive:true});
+
       // initialize state
-      handleScroll();
+      onScroll();
     })();
 
     // Contact form feedback + lightweight UX
@@ -497,11 +524,13 @@
         modalLink.href = link || '#';
         modal.classList.add('show');
         modal.setAttribute('aria-hidden','false');
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
       }
       function closeModal(){
         modal.classList.remove('show');
         modal.setAttribute('aria-hidden','true');
+        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
       }
       document.addEventListener('click', function(e){
