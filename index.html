@@ -9,8 +9,8 @@
     :root{
       --bg: #f5f7fa;
       --card: #ffffff;
-      --text: #0f1724;
-      --muted: #6b7280;
+      --text: #0b1220; /* darker for accessibility */
+      --muted: #475569; /* stronger muted color for contrast */
       --accent1: #0077ff;
       --accent2: #00d4ff;
       --glass: rgba(255,255,255,0.6);
@@ -50,7 +50,7 @@
     .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;box-shadow:var(--shadow)}
-    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--text);font-weight:600}
     nav a:hover{background:var(--glass);color:var(--text)}
     header.scrolled nav a{color:#f8fafc}
     header.scrolled .social a{color:var(--text);border-color:rgba(15,23,36,0.04)}
@@ -75,6 +75,26 @@
     .hero h1{font-size:2.4rem;margin-bottom:12px}
     .title-accent{display:inline-block;padding:6px 10px;background:rgba(255,255,255,0.12);border-radius:8px;font-weight:600}
     .hero p{opacity:0.95}
+    /* Subtitle: prevent layout jumps by reserving space and smoothing transitions */
+    #subtitle{display:inline-block;white-space:nowrap;overflow:hidden;vertical-align:middle;transition:opacity .32s ease;will-change:opacity,min-width}
+
+    /* About card */
+    .about-card{display:flex;gap:20px;align-items:center;padding:22px;border-radius:14px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 18px 50px rgba(2,6,23,0.08);position:relative;overflow:visible}
+    .about-card .about-text{flex:1;min-width:240px}
+    .about-card h3{margin:0 0 8px;font-size:1.25rem;color:var(--text)}
+    .about-card p{color:var(--muted);font-size:1rem;line-height:1.5}
+    .about-card .highlight{color:var(--accent1);font-weight:700}
+    .about-img{flex:0 0 240px;border-radius:12px;overflow:hidden;box-shadow:0 12px 36px rgba(2,6,23,0.12);}
+    .about-img img{display:block;width:100%;height:100%;object-fit:cover}
+    .stats{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+    .stat{min-width:90px}
+    .stat-number{font-size:1.4rem;font-weight:800;color:var(--accent1)}
+    .stat-label{font-size:0.85rem;color:var(--muted)}
+    .about-cta{margin-top:16px;display:inline-block}
+
+    /* About reveal */
+    .about-card{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
+    .about-card.in-view{opacity:1;transform:none}  
     .cta{display:inline-block;margin-top:18px;padding:10px 20px;border-radius:10px;background:white;color:var(--accent1);font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
 
     /* Hero image */
@@ -85,22 +105,56 @@
     .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
 
     /* Skills */
-    .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
-    .skill{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 6px 18px rgba(2,6,23,0.06);transition:transform .25s ease,box-shadow .25s ease}
-    .skill:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.08)}
-    .skill .icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
-    .skill p{margin:0;font-weight:600;color:var(--text)}
+    .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+    .skill{position:relative;display:flex;align-items:flex-start;gap:18px;padding:28px 22px;border-radius:14px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 12px 30px rgba(2,6,23,0.08);transition:transform .32s cubic-bezier(.2,.9,.2,1),box-shadow .32s ease,filter .32s ease;margin:8px 0}
+    .skill::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;border-top-left-radius:14px;border-top-right-radius:14px;background:linear-gradient(90deg,var(--accent1),var(--accent2));z-index:2}
+    .skill > *{position:relative;z-index:3}
+    .skill:hover{transform:translateY(-10px);box-shadow:0 34px 80px rgba(0,119,255,0.14);filter:brightness(1.01)}
+    .skill .icon{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:0 12px 30px rgba(0,119,255,0.08)}
+    .skill-title{margin:0;font-weight:700;color:var(--text);font-size:1.02rem}
+    .skill-desc{margin:8px 0 0;color:var(--muted);font-size:0.97rem;line-height:1.4}
+    @media(min-width:1100px){
+      /* col-6 layout on wide screens: two columns */
+      .skills{grid-template-columns:repeat(2,1fr);gap:32px}
+    }
+    @media(max-width:700px){
+      .skill{padding:18px 14px;border-radius:12px;margin:6px 0}
+      .skill .icon{width:44px;height:44px;border-radius:10px;font-size:18px}
+    }
 
     /* Experience */
     .experience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-    .exp-card{position:relative;padding:18px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 8px 28px rgba(2,6,23,0.06);overflow:hidden;transition:transform .28s cubic-bezier(.2,.9,.2,1),box-shadow .28s ease,opacity .6s ease}
-    .exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--accent1),var(--accent2));border-top-left-radius:12px;border-bottom-left-radius:12px}
+    .exp-card{position:relative;padding:22px 18px 18px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 8px 28px rgba(2,6,23,0.06);overflow:hidden;transition:transform .28s cubic-bezier(.2,.9,.2,1),box-shadow .28s ease,opacity .6s ease}
+    .exp-card::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-top-left-radius:12px;border-top-right-radius:12px;z-index:2}
+    .exp-card > *{position:relative;z-index:3}
     .exp-card h3{margin:0;margin-bottom:6px;font-size:1.05rem}
     .exp-card .meta{font-size:0.85rem;color:var(--muted);margin-bottom:10px}
     .exp-card ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
-    .exp-card:hover{transform:translateY(-8px);box-shadow:0 22px 50px rgba(2,6,23,0.09)}
+    .exp-card:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(0,119,255,0.10)}
     .exp-card{opacity:0;transform:translateY(18px)}
+
+    /* Resume section */
+    .resume-section{margin-top:28px}
+    .resume-grid{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+    .resume-card{background:linear-gradient(180deg,#fff,#fbfdff);padding:20px;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.06)}
+    .resume-summary{color:var(--muted);line-height:1.5;margin-top:6px}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .tag{background:rgba(0,119,255,0.06);color:var(--accent1);padding:6px 10px;border-radius:8px;font-weight:600;font-size:0.85rem}
+    .resume-item{margin-top:14px}
+    .resume-item h4{margin:0;font-size:1rem}
+    .resume-item .meta{font-size:0.9rem;color:var(--muted);margin-bottom:8px}
+    .resume-item ul{margin:0 0 0 18px;color:var(--muted)}
+    .resume-download{display:flex;gap:12px;align-items:center;margin-top:12px}
+    @media(max-width:900px){.resume-grid{grid-template-columns:1fr}.resume-card{padding:16px}}
     .exp-card.in-view{opacity:1;transform:none}
+
+    /* Education & Certifications section */
+    .education-section{margin-top:32px}
+    .education-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+    .education-card{background:linear-gradient(180deg,#fff,#fbfdff);padding:20px 18px;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.06)}
+    .education-card h3{margin-top:0;font-size:1.1rem;color:var(--accent1)}
+    .education-card ul{margin:10px 0 0 0;padding-left:18px;color:var(--muted);font-size:0.98rem;line-height:1.5}
+    @media(max-width:900px){.education-grid{grid-template-columns:1fr}}
 
     /* Featured / Lab */
     .featured{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
@@ -112,11 +166,18 @@
 
     /* Project cards (lab) */
     .lab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:14px}
-    .lab-card{border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 10px 30px rgba(2,6,23,0.06);transition:transform .28s ease,box-shadow .28s ease,filter .28s ease}
-    .lab-card:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(2,6,23,0.08);filter:brightness(1.03)}
+    .lab-card{position:relative;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 10px 30px rgba(2,6,23,0.06);transition:transform .28s ease,box-shadow .28s ease,filter .28s ease;padding-top:10px}
+    .lab-card::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,var(--accent1),var(--accent2));z-index:2;border-top-left-radius:12px;border-top-right-radius:12px}
+    .lab-card > *{position:relative;z-index:3}
+    .lab-card:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(0,119,255,0.09);filter:brightness(1.02)}
     .lab-thumb{height:160px;overflow:hidden}
     .lab-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
     .lab-card:hover .lab-thumb img{transform:scale(1.06)}
+
+    .project{border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(180deg,#fff,#fafcff);transition:transform .28s ease,box-shadow .28s ease}
+    .project::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,var(--accent1),var(--accent2));z-index:2;border-top-left-radius:12px;border-top-right-radius:12px}
+    .project > *{position:relative;z-index:3}
+    .project:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(0,119,255,0.09)}
     .lab-content{padding:12px}
     .lab-content .meta{font-size:0.85rem;color:var(--muted);margin-bottom:8px}
     .learn{display:inline-block;margin-top:10px;color:var(--accent1);font-weight:700}
@@ -175,16 +236,28 @@
       .hero{padding:36px}
       .hero-right{flex-basis:280px}
       .hero h1{font-size:1.6rem}
-      .skills{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+      /* Use full-width single-column (col-12) layout on small devices for readability */
+      .skills{grid-template-columns:1fr}
+      .experience-grid{grid-template-columns:1fr}
+      .lab-grid{grid-template-columns:1fr}
+      .projects{grid-template-columns:1fr}
       /* Center header content on mobile */
       .nav{flex-direction:column;align-items:center;justify-content:center;text-align:center}
       .nav nav{margin-top:10px}
       .nav .social{margin-top:10px}
       /* show social label on mobile */
-      .nav .social .label{display:inline-block;font-size:0.95rem;color:var(--muted);margin-top:4px}
+      .nav .social .label{display:inline-block;font-size:0.95rem;color:var(--text);margin-top:4px}
       .nav .social a{padding:6px 10px}
+      /* Hide About image on small screens to improve focus and reduce load */
+      .about-img{display:none}
       .logo{width:40px;height:40px}
     }
+
+    /* Make contact-info and contact-form same height */
+    .contact-grid{align-items:stretch}
+    .contact-info, .contact-form{display:flex;flex-direction:column;height:100%}
+    .contact-info{flex:1}
+    .contact-form{flex:1}
   </style>
 </head>
 <body>
@@ -229,19 +302,35 @@
   <!-- About Section -->
   <section id="about" class="fade-in container">
     <h2>About Me</h2>
-    <p>I am a dedicated finance professional with extensive experience in financial management, operations, and administration. I help organizations improve financial efficiency, streamline reporting, and make data-driven decisions. My approach combines accuracy, strategic insight, and collaborative problem-solving.</p>
-  </section>
+    <div class="about-card card">
+      <div class="about-text">
+        <h3>Strategic finance leader delivering clarity, control & growth</h3>
+        <p>I partner with organisations and individuals to <span class="highlight">streamline reporting</span>, improve financial controls, and design budgeting frameworks that enable confident decisions and sustainable growth. I deliver accurate reporting, process improvements and team leadership that translates financial data into business outcomes.</p>
+
+        <div class="stats">
+          <div class="stat"><div class="stat-number" data-target="21">0</div><div class="stat-label">Years Experience</div></div>
+          <div class="stat"><div class="stat-number" data-target="50">0</div><div class="stat-label">Projects Delivered</div></div>
+          <div class="stat"><div class="stat-number" data-target="15">0</div><div class="stat-label">Team Members Led</div></div>
+        </div>
+
+        <!-- Specialties moved to Skills & Expertise section -->
+
+        <a class="cta about-cta" href="#contact">Work with me</a>
+      </div>
+      <div class="about-img"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" alt="Naomi at work" loading="lazy"></div>
+    </div>
+  </section> 
 
   <!-- Skills Section -->
   <section id="skills" class="fade-in container">
     <h2>Skills & Expertise</h2>
     <div class="skills">
-      <div class="skill card"><div class="icon">📊</div><p>Financial Reporting</p></div>
-      <div class="skill card"><div class="icon">🧾</div><p>Budget Preparation & Analysis</p></div>
-      <div class="skill card"><div class="icon">💸</div><p>Reconciliation & Cash Flow</p></div>
-      <div class="skill card"><div class="icon">🧰</div><p>QuickBooks & Accounting Software</p></div>
-      <div class="skill card"><div class="icon">👥</div><p>Team Leadership & Management</p></div>
-      <div class="skill card"><div class="icon">⚙️</div><p>Operational Efficiency</p></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h2v18H3zM8 10h2v11H8zM13 6h2v15h-2zM18 13h2v8h-2z"/></svg></div><div><h4 class="skill-title">Financial Reporting & KPI Metrics</h4><p class="skill-desc">Prepare accurate monthly/quarterly financial reports and dashboards that provide leaders with actionable insights for decision-making. Track and analyze key performance indicators (KPIs) and metrics to drive business outcomes. Includes Strategic Planning.</p></div></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h10" stroke-width="0.6"/></svg></div><div><h4 class="skill-title">Budgeting, Forecasting & Analysis</h4><p class="skill-desc">Develop robust budgeting models, run variance analyses, and forecast cash flow to optimise resource allocation and support strategic planning. Includes Budgeting & Forecasting, Cash Flow Forecasting, and Budget Preparation & Analysis.</p></div></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1v22M5 7h14M5 17h14"/></svg></div><div><h4 class="skill-title">Financial Modelling, Risk & Compliance</h4><p class="skill-desc">Build financial models (FP&A), assess risk, and implement controls to ensure compliance and support business growth. Includes Financial Modelling (FP&A), Risk Management, and GAAP & Compliance.</p></div></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0-6v2m0 16v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2m18 0h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div><div><h4 class="skill-title">QuickBooks & Accounting Software</h4><p class="skill-desc">Implement and maintain accounting systems, automate routine tasks, and train teams to use tools effectively for reliable bookkeeping.</p></div></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 11a2 2 0 100-4 2 2 0 000 4zM8 11a2 2 0 100-4 2 2 0 000 4zM2 19c0-2.2 3-4 6-4s6 1.8 6 4v1H2v-1zM14 19c0-1.4 2.2-2.5 4-2.9V19h-4z"/></svg></div><div><h4 class="skill-title">Team Leadership & Management</h4><p class="skill-desc">Lead finance teams, build capacity, and foster cross-functional collaboration to deliver results and operational excellence.</p></div></div>
+      <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.6 3.6L17 7l-3 2.4L15 13l-3-1.8L9 13l1-3.6L7 7l3.4-1.4z"/></svg></div><div><h4 class="skill-title">Operational Efficiency & Process Improvement</h4><p class="skill-desc">Identify process improvements, implement controls, and streamline workflows to reduce costs and improve accuracy. Includes Business Process Improvement and Operational Efficiency.</p></div></div>
     </div>
   </section>
 
@@ -250,88 +339,81 @@
     <h2>Professional Experience</h2>
     <div class="experience-grid">
       <article class="exp-card card">
-        <h3>Director of Finance <span style="float:right;font-weight:600;color:var(--muted)">Mar 2024 – Present</span></h3>
-        <div class="meta">Ona Kenya Limited</div>
+        <h3>Credit Controller</h3>
+        <div class="meta">Octagon Africa</div>
         <ul>
-          <li>Lead financial strategy and long-term planning to support growth.</li>
-          <li>Oversee monthly/quarterly reporting, budgeting, and compliance.</li>
-          <li>Build cross-functional financial models to inform executive decisions.</li>
+          <li>✔️ Prepare monthly financial & management reports and reconciliations</li>
+          <li>✔️ Ensure timely accruals and accurate posting of expenses to cost centres</li>
+          <li>✔️ Perform monthly revenue/expenditure analysis and variance commentaries</li>
+          <li>✔️ Reconcile General Ledger and Bank accounts and support audits</li>
         </ul>
       </article>
 
       <article class="exp-card card">
-        <h3>Finance Lead <span style="float:right;font-weight:600;color:var(--muted)">Nov 2022 – Feb 2024</span></h3>
-        <div class="meta">Ona Kenya Limited</div>
+        <h3>Head of Accounts, Insurance Department</h3>
+        <div class="meta">Octagon Africa</div>
         <ul>
-          <li>Managed day-to-day financial operations and reconciliations.</li>
-          <li>Improved reporting cadence and accuracy through process change.</li>
-          <li>Mentored and grew a high-performing finance team.</li>
+          <li>✔️ Led accounting and reporting for insurance operations, including premium tax submissions</li>
+          <li>✔️ Reviewed systems and processes to increase efficiency and remove duplication</li>
+          <li>✔️ Managed brokers/agents and credit collections to protect cash flow</li>
         </ul>
       </article>
 
       <article class="exp-card card">
-        <h3>Finance Manager <span style="float:right;font-weight:600;color:var(--muted)">Feb 2020 – Nov 2022</span></h3>
-        <div class="meta">Ona Kenya Limited</div>
+        <h3>Head Of Accounting</h3>
+        <div class="meta">Shift Auto Ambulance Ltd</div>
         <ul>
-          <li>Prepared forecasts, budgets and supporting financial analysis.</li>
-          <li>Coordinated audit activities and financial control improvements.</li>
+          <li>✔️ Led accounts team and ensured timely financial reporting and audit facilitation</li>
+          <li>✔️ Managed supplier payments, bank reconciliations and cash flow planning</li>
+          <li>✔️ Implemented internal controls and supervised team performance</li>
         </ul>
       </article>
 
       <article class="exp-card card">
-        <h3>Finance & Administration Manager <span style="float:right;font-weight:600;color:var(--muted)">Jan 2003 – Jan 2020</span></h3>
-        <div class="meta">Worldwide Sires E.A. LTD</div>
+        <h3>Finance Administrator</h3>
+        <div class="meta">Saurus Networks</div>
         <ul>
-          <li>Managed full finance & admin functions including payroll & reporting.</li>
-          <li>Led process improvement projects reducing overhead and increasing reliability.</li>
+          <li>✔️ Posted inventory transactions into Microsoft Dynamics and managed bank accounts</li>
+          <li>✔️ Handled accounts payables/receivables, VAT returns, and statutory deductions</li>
+          <li>✔️ Generated invoices and credit notes; ensured timely collections</li>
+        </ul>
+      </article>
+
+      <article class="exp-card card">
+        <h3>Programme Coordinator</h3>
+        <div class="meta">Sinapis Organisation (in partnership with KCA University)</div>
+        <ul>
+          <li>✔️ Coordinated programmes, stakeholder engagement and project delivery</li>
         </ul>
       </article>
     </div>
   </section>
 
-  <!-- Featured / Lab Section -->
-  <section id="lab" class="fade-in container" style="position:relative;overflow:visible">
-    <div class="glow-circle" aria-hidden="true"></div>
-    <h2>Lab & Featured Work</h2>
-    <div class="featured card">
-      <div class="featured-media"><img src="https://images.unsplash.com/photo-1559526324-593bc073d938?q=80&w=1200&auto=format&fit=crop" alt="Featured project - reporting" loading="lazy"></div>
-      <div class="featured-content">
-        <div class="meta">Featured • Reporting</div>
-        <h3>Financial Reporting System Upgrade</h3>
-        <p>Implemented improved reporting workflows, reducing errors by 30% and improving decision-making speed. Built dashboards, automation and controls for timely insights.</p>
-        <a class="cta" href="#" id="featured-learn" data-title="Financial Reporting System Upgrade" data-desc="Implemented improved reporting workflows, dashboards and automation to reduce errors and improve decision-making speed." data-image="https://images.unsplash.com/photo-1559526324-593bc073d938?q=80&w=1200&auto=format&fit=crop">Learn more →</a>
+
+  <!-- Education & Certifications Section -->
+  <section id="education" class="fade-in container education-section">
+    <h2>Education & Certifications</h2>
+    <div class="education-grid">
+      <div class="education-card card" style="grid-column: 1 / -1;">
+        <h3>Education & Certifications</h3>
+        <ul class="meta">
+          <li><strong>Strathmore University</strong> — Certified Public Accountants</li>
+          <li><strong>KCA University</strong> — Bachelor of Commerce (Finance)</li>
+          <li><strong>Kenyatta University</strong> — Bachelor's degree, Marketing</li>
+          <li><strong>Presbyterian University of East Africa</strong> — Higher Diploma, Counseling Psychology</li>
+          <li><strong>Presbyterian University of East Africa</strong> — Diploma, Theology/Theological Studies</li>
+        </ul>
+        <h4 style="margin-top:18px;">Certifications</h4>
+        <ul class="meta">
+          <li>Entrepreneurship</li>
+          <li>CPA</li>
+          <li>SAGE 300C ERP</li>
+        </ul>
+        <a class="cta" href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer" style="margin-top:18px;display:inline-block;">Learn more…</a>
       </div>
     </div>
-
-    <div class="lab-grid">
-      <article class="lab-card" data-title="Budget Planning & Forecasting" data-desc="Developed comprehensive budgeting models for multiple departments, improving resource allocation and transparency." data-image="https://images.unsplash.com/photo-1556761175-129418cb2dfe?q=80&w=1200&auto=format&fit=crop">
-        <div class="lab-thumb"><img src="https://images.unsplash.com/photo-1556761175-129418cb2dfe?q=80&w=1200&auto=format&fit=crop" alt="Budget Planning" loading="lazy"></div>
-        <div class="lab-content">
-          <div class="meta">Budgeting • Forecasting</div>
-          <h3>Budget Planning & Forecasting</h3>
-          <a class="learn" href="#">Learn more →</a>
-        </div>
-      </article>
-
-      <article class="lab-card" data-title="Operational Efficiency Project" data-desc="Optimized workflows and implemented financial controls that reduced overhead by 15% annually." data-image="https://images.unsplash.com/photo-1542223616-3b216f10b7a1?q=80&w=1200&auto=format&fit=crop">
-        <div class="lab-thumb"><img src="https://images.unsplash.com/photo-1542223616-3b216f10b7a1?q=80&w=1200&auto=format&fit=crop" alt="Operational Efficiency" loading="lazy"></div>
-        <div class="lab-content">
-          <div class="meta">Process Improvement</div>
-          <h3>Operational Efficiency Project</h3>
-          <a class="learn" href="#">Learn more →</a>
-        </div>
-      </article>
-
-      <article class="lab-card" data-title="Financial Controls & Payroll" data-desc="Designed controls and payroll improvements to increase reliability and accuracy." data-image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop">
-        <div class="lab-thumb"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop" alt="Controls" loading="lazy"></div>
-        <div class="lab-content">
-          <div class="meta">Controls • Payroll</div>
-          <h3>Financial Controls & Payroll</h3>
-          <a class="learn" href="#">Learn more →</a>
-        </div>
-      </article>
-    </div>
   </section>
+
 
   <!-- Projects Section -->
   <section id="projects" class="fade-in container">
@@ -374,7 +456,7 @@
         <ul class="contact-list">
           <li>✉️ <a href="mailto:joy.kariuki91@gmail.com">joy.kariuki91@gmail.com</a></li>
           <li>💼 <a href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li>💻 <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li>🐦 <a href="https://twitter.com/your-handle" target="_blank" rel="noopener noreferrer">Twitter</a></li>
         </ul>
         <p style="margin-top:12px;color:var(--muted);font-size:0.95rem"><strong>Tip:</strong> Attach screenshots or links when discussing projects.</p>
       </div>
@@ -414,7 +496,7 @@
   </footer>
 
   <script>
-    // Typed subtitle
+    // Typed subtitle (smoother, reserve width to prevent jumps)
     (function(){
       const el = document.getElementById('subtitle');
       const phrases = [
@@ -422,23 +504,46 @@
         'Delivering reliable reporting, budgeting & process improvements.',
         'Finance leadership • Operations • Team development'
       ];
+
+      if(!el) return;
+
+      // Reserve width based on longest phrase to avoid layout shifts
+      const maxLen = Math.max(...phrases.map(p => p.length));
+      el.style.minWidth = (maxLen + 2) + 'ch'; // a little padding
+
       let idx = 0;
       let char = 0;
       let forward = true;
+      const typingDelay = 45;   // ms per char when typing
+      const deletingDelay = 22; // ms per char when deleting
+      const holdDelay = 1400;   // hold full phrase before deleting
+
       function tick(){
         const full = phrases[idx];
         if(forward){
           char++;
           el.textContent = full.slice(0,char);
-          if(char === full.length){ forward = false; setTimeout(tick,1600); return; }
+          if(char === full.length){
+            // hold briefly on full phrase, then start deleting
+            setTimeout(()=>{ forward = false; tick(); }, holdDelay);
+            return;
+          }
+          setTimeout(tick, typingDelay);
         } else {
           char--;
           el.textContent = full.slice(0,char);
-          if(char === 0){ forward = true; idx = (idx+1)%phrases.length; }
+          if(char === 0){
+            forward = true;
+            idx = (idx+1) % phrases.length;
+            setTimeout(tick, typingDelay);
+            return;
+          }
+          setTimeout(tick, deletingDelay);
         }
-        setTimeout(tick, forward ? 30 : 18);
       }
-      tick();
+
+      // Start with a small delay so initial layout stabilizes
+      setTimeout(tick, 300);
     })();
 
     // Staggered reveal on scroll
@@ -565,6 +670,44 @@
           glow.style.transform = `translate(${nx*18}px, ${ny*18}px)`;
         });
       }
+
+      // About counters and reveal
+      (function(){
+        const about = document.getElementById('about');
+        const counters = about ? about.querySelectorAll('.stat-number') : [];
+        let counted = false;
+        if(!about) return;
+        const obs = new IntersectionObserver((entries, o) => {
+          entries.forEach(entry => {
+            if(entry.isIntersecting){
+              // add in-view to about-card for reveal
+              const card = about.querySelector('.about-card');
+              if(card) card.classList.add('in-view');
+
+              if(!counted && counters.length){
+                counters.forEach(c => animateCount(c));
+                counted = true;
+              }
+              o.unobserve(entry.target);
+            }
+          });
+        }, {threshold:0.3});
+        obs.observe(about);
+
+        function animateCount(el){
+          const target = +el.dataset.target || 0;
+          const duration = 1400; // ms
+          const start = performance.now();
+          function frame(now){
+            const progress = Math.min((now - start)/duration, 1);
+            const value = Math.floor(progress * target);
+            el.textContent = value;
+            if(progress < 1) requestAnimationFrame(frame);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(frame);
+        }
+      })();
     })();
   </script>
 </body>
