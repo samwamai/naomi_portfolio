@@ -129,7 +129,12 @@
     .exp-card > *{position:relative;z-index:3}
     .exp-card h3{margin:0;margin-bottom:6px;font-size:1.05rem}
     .exp-card .meta{font-size:0.85rem;color:var(--muted);margin-bottom:10px}
-    .exp-card ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+    .exp-card ul{
+      margin:8px 0 0;
+      padding-left:18px;
+      color:var(--muted);
+      list-style:none;
+    }
     .exp-card:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(0,119,255,0.10)}
     .exp-card{opacity:0;transform:translateY(18px)}
 
@@ -193,7 +198,12 @@
     .modal-close{position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:18px;cursor:pointer}
 
     /* Projects */
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .projects{display:flex;gap:18px;flex-wrap:wrap;align-items:stretch;width:100%;max-width:1100px;margin:0 auto;}
+    .project{flex:1 1 0;min-width:0;max-width:360px;}
+    @media (max-width:700px){
+      .projects{display:block;max-width:100%;}
+      .project{max-width:100%;width:100%;margin-bottom:18px;}
+    }
     .project{border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(180deg,#fff,#fafcff);transition:transform .28s ease,box-shadow .28s ease}
     .project:hover{transform:translateY(-8px);box-shadow:0 22px 50px rgba(2,6,23,0.08)}
     .project .thumb{height:180px;overflow:hidden}
@@ -204,7 +214,9 @@
 
     /* Contact */
     .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-    .contact-info{padding:22px;background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px}
+    .contact-info{padding:22px;background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;transition:transform 0.7s cubic-bezier(.2,.9,.2,1), opacity 0.7s cubic-bezier(.2,.9,.2,1);transform:translateX(-60px);opacity:0}
+    .contact-info.in-view{transform:translateX(0);opacity:1}
+    .contact-info.out-view{transform:translateX(-60px);opacity:0}
     .contact-info h3{margin-top:0}
     .contact-list{list-style:none;padding:0;margin:12px 0 0}
     .contact-list li{display:flex;gap:12px;align-items:center;margin-bottom:10px}
@@ -224,12 +236,15 @@
   
 
     /* Footer */
-    footer{margin-top:36px;color:var(--muted);font-size:0.95rem;text-align:center;position:relative;z-index:70;padding:28px 20px;background:transparent;border-top:1px solid rgba(15,23,36,0.03)}
+    footer{margin-top:36px;color:var(--muted);font-size:0.95rem;text-align:center;position:relative;z-index:70;padding:28px 20px;background:transparent;border-top:1px solid rgba(15,23,36,0.03);opacity:1 !important;transform:none !important;}
     @media(max-width:700px){body{padding-bottom:200px}footer{padding:20px 14px}}
 
     /* Utilities & Animations */
     .fade-in{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
     .in-view{opacity:1;transform:none}
+    .slide-section{transition:transform 0.7s cubic-bezier(.2,.9,.2,1), opacity 0.7s cubic-bezier(.2,.9,.2,1);transform:translateX(-60px);opacity:0}
+    .slide-section.in-view{transform:translateX(0);opacity:1}
+    .slide-section.out-view{transform:translateX(-60px);opacity:0}
 
     /* Responsive */
     @media (max-width:700px){
@@ -288,43 +303,49 @@
     </div>
   </header>
 
-  <section class="hero fade-in">
+  <section class="hero fade-in slide-section">
     <div class="hero-left">
       <h1>Naomi Joy Kariuki <span class="title-accent">Finance & Operations</span></h1>
+      <div style="font-size:1.08rem;color:#fff;font-weight:600;margin-bottom:8px;">Empowering Financial Growth, Inspiring Secure Futures</div>
       <p id="subtitle">Strategic financial leader focused on accuracy, efficiency, and growth.</p>
       <a class="cta" href="#contact">Hire Me / Connect</a>
     </div>
     <div class="hero-right">
-      <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5d2a4a9e9d7f1f1c3d0c0b5f9a3e7d2b" alt="Naomi Joy Kariuki" loading="lazy">
+      <img class="avatar" src="pasport.jpeg" alt="Naomi Joy Kariuki" loading="lazy">
     </div>
   </section>
 
   <!-- About Section -->
-  <section id="about" class="fade-in container">
+  <section id="about" class="fade-in slide-section container">
+    
     <h2>About Me</h2>
     <div class="about-card card">
       <div class="about-text">
         <h3>Strategic finance leader delivering clarity, control & growth</h3>
-        <p>I partner with organisations and individuals to <span class="highlight">streamline reporting</span>, improve financial controls, and design budgeting frameworks that enable confident decisions and sustainable growth. I deliver accurate reporting, process improvements and team leadership that translates financial data into business outcomes.</p>
+        <p>I partner with organisations and individuals to <span class="highlight">streamline reporting</span>, improve financial controls, and design budgeting frameworks that enable confident decisions and sustainable growth. I deliver accurate reporting, process improvements and team leadership that translates financial data into business outcomes.<br><br>
+        <span class="highlight">I also advise clients on pension planning and smart investment strategies to help them secure their financial future.</span></p>
 
         <div class="stats">
-          <div class="stat"><div class="stat-number" data-target="21">0</div><div class="stat-label">Years Experience</div></div>
-          <div class="stat"><div class="stat-number" data-target="50">0</div><div class="stat-label">Projects Delivered</div></div>
-          <div class="stat"><div class="stat-number" data-target="15">0</div><div class="stat-label">Team Members Led</div></div>
+          <div class="stat"><div class="stat-number" data-target="7">0+</div><div class="stat-label">Years Experience</div></div>
+          <div class="stat"><div class="stat-number" data-target="50">0+</div><div class="stat-label">Projects Delivered</div></div>
+          <div class="stat"><div class="stat-number" data-target="250">0+</div><div class="stat-label">Team Members Led</div></div>
+          <div class="stat"><div class="stat-number" data-target="3">0+</div><div class="stat-label">Certifications Earned</div></div>
         </div>
 
         <!-- Specialties moved to Skills & Expertise section -->
 
         <a class="cta about-cta" href="#contact">Work with me</a>
       </div>
-      <div class="about-img"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" alt="Naomi at work" loading="lazy"></div>
+      <div class="about-img"><img src="stand.jpeg" alt="Naomi at work" loading="lazy"></div>
     </div>
   </section> 
 
   <!-- Skills Section -->
-  <section id="skills" class="fade-in container">
+  <section id="skills" class="fade-in slide-section container">
+    
     <h2>Skills & Expertise</h2>
     <div class="skills">
+        <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.93V17a1 1 0 11-2 0v-2.07A6.002 6.002 0 0112 6a6 6 0 011 11.93z"/></svg></div><div><h4 class="skill-title">Pension & Investment Advisory</h4><p class="skill-desc">Advise individuals and organizations on pension options, retirement planning, and smart investment strategies to maximize long-term financial security and growth.</p></div></div>
       <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h2v18H3zM8 10h2v11H8zM13 6h2v15h-2zM18 13h2v8h-2z"/></svg></div><div><h4 class="skill-title">Financial Reporting & KPI Metrics</h4><p class="skill-desc">Prepare accurate monthly/quarterly financial reports and dashboards that provide leaders with actionable insights for decision-making. Track and analyze key performance indicators (KPIs) and metrics to drive business outcomes. Includes Strategic Planning.</p></div></div>
       <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h10" stroke-width="0.6"/></svg></div><div><h4 class="skill-title">Budgeting, Forecasting & Analysis</h4><p class="skill-desc">Develop robust budgeting models, run variance analyses, and forecast cash flow to optimise resource allocation and support strategic planning. Includes Budgeting & Forecasting, Cash Flow Forecasting, and Budget Preparation & Analysis.</p></div></div>
       <div class="skill card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1v22M5 7h14M5 17h14"/></svg></div><div><h4 class="skill-title">Financial Modelling, Risk & Compliance</h4><p class="skill-desc">Build financial models (FP&A), assess risk, and implement controls to ensure compliance and support business growth. Includes Financial Modelling (FP&A), Risk Management, and GAAP & Compliance.</p></div></div>
@@ -335,17 +356,19 @@
   </section>
 
   <!-- Experience Section -->
-  <section id="experience" class="fade-in container">
+  <section id="experience" class="fade-in slide-section container">
+    
     <h2>Professional Experience</h2>
     <div class="experience-grid">
       <article class="exp-card card">
         <h3>Credit Controller</h3>
         <div class="meta">Octagon Africa</div>
         <ul>
-          <li>✔️ Prepare monthly financial & management reports and reconciliations</li>
-          <li>✔️ Ensure timely accruals and accurate posting of expenses to cost centres</li>
-          <li>✔️ Perform monthly revenue/expenditure analysis and variance commentaries</li>
-          <li>✔️ Reconcile General Ledger and Bank accounts and support audits</li>
+           <li>✔️ Prepare monthly financial & management reports and reconciliations</li>
+           <li>✔️ Ensure timely accruals and accurate posting of expenses to cost centres</li>
+           <li>✔️ Perform monthly revenue/expenditure analysis and variance commentaries</li>
+           <li>✔️ Reconcile General Ledger and Bank accounts and support audits</li>
+           <li>✔️ Guided clients in selecting optimal pension schemes and investment portfolios for improved retirement outcomes</li>
         </ul>
       </article>
 
@@ -356,6 +379,8 @@
           <li>✔️ Led accounting and reporting for insurance operations, including premium tax submissions</li>
           <li>✔️ Reviewed systems and processes to increase efficiency and remove duplication</li>
           <li>✔️ Managed brokers/agents and credit collections to protect cash flow</li>
+          <li>✔️ Oversaw pension fund accounting and ensured regulatory compliance for retirement benefits</li>
+          <li>✔️ Provided financial advice to clients on insurance and pension investment options</li>
         </ul>
       </article>
 
@@ -366,9 +391,11 @@
           <li>✔️ Led accounts team and ensured timely financial reporting and audit facilitation</li>
           <li>✔️ Managed supplier payments, bank reconciliations and cash flow planning</li>
           <li>✔️ Implemented internal controls and supervised team performance</li>
+          <li>✔️ Developed and monitored annual budgets to align with organizational goals</li>
+          <li>✔️ Provided guidance on employee pension contributions and statutory deductions</li>
         </ul>
       </article>
-
+      <!--
       <article class="exp-card card">
         <h3>Finance Administrator</h3>
         <div class="meta">Saurus Networks</div>
@@ -378,7 +405,6 @@
           <li>✔️ Generated invoices and credit notes; ensured timely collections</li>
         </ul>
       </article>
-
       <article class="exp-card card">
         <h3>Programme Coordinator</h3>
         <div class="meta">Sinapis Organisation (in partnership with KCA University)</div>
@@ -386,15 +412,18 @@
           <li>✔️ Coordinated programmes, stakeholder engagement and project delivery</li>
         </ul>
       </article>
-    </div>
-  </section>
+      -->
+      </div>
+      <a class="cta" href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer" style="margin-top:24px;display:inline-block;">Learn more…</a>
+    </section>
 
 
   <!-- Education & Certifications Section -->
-  <section id="education" class="fade-in container education-section">
+  <section id="education" class="fade-in slide-section container education-section">
+    
     <h2>Education & Certifications</h2>
     <div class="education-grid">
-      <div class="education-card card" style="grid-column: 1 / -1;">
+      <div class="education-card card" style="height:100%;display:flex;flex-direction:column;justify-content:space-between;">
         <h3>Education & Certifications</h3>
         <ul class="meta">
           <li><strong>Strathmore University</strong> — Certified Public Accountants</li>
@@ -405,52 +434,83 @@
         </ul>
         <h4 style="margin-top:18px;">Certifications</h4>
         <ul class="meta">
-          <li>Entrepreneurship</li>
-          <li>CPA</li>
-          <li>SAGE 300C ERP</li>
+          <li>
+            <strong>SAGE 300C ERP</strong><br>
+            <span style="color:var(--muted);font-size:0.97em;">VISTA PRIME SOLUTION</span>
+          </li>
+          <li>
+            <strong>Entrepreneurship</strong><br>
+            <span style="color:var(--muted);font-size:0.97em;">AFRICA GLOBAL SOLUTIONS</span>
+          </li>
+          <li>
+            <strong>CPA</strong><br>
+            <span style="color:var(--muted);font-size:0.97em;">kasneb</span><br>
+            <span style="color:var(--muted);font-size:0.93em;">Credential ID Nac/170198</span>
+          </li>
         </ul>
         <a class="cta" href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer" style="margin-top:18px;display:inline-block;">Learn more…</a>
+      </div>
+      <div class="education-card card" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <h3 style="text-align:center;">KCA University Billboard Feature</h3>
+        <img src="bilboard.jpeg" alt="KCA University Billboard Feature" style="max-width:100%;border-radius:10px;margin:12px 0;box-shadow:0 8px 24px rgba(16,24,40,0.10);">
       </div>
     </div>
   </section>
 
 
   <!-- Projects Section -->
-  <section id="projects" class="fade-in container">
+  <section id="projects" class="fade-in slide-section container">
+    
     <h2>Highlighted Projects</h2>
     <div class="projects">
-      <div class="project">
-        <div class="thumb"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop" alt="Financial Reporting System" loading="lazy"></div>
-        <div class="project-content">
-          <div class="meta">Ona Kenya Limited • Reporting</div>
-          <h3>Financial Reporting System Upgrade</h3>
-          <p>Implemented improved reporting workflows, reducing errors by 30% and improving decision-making speed.</p>
+      <div class="project" style="flex:1 1 0;min-width:0;max-width:360px;">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop" alt="Accounting Tools and Calculator" loading="lazy"></div>
+        <div class="project-content" style="display:flex;flex-direction:column;height:100%;">
+          <div class="meta">Octagon Africa • Credit Controller</div>
+          <h3>Monthly Financial & Management Reporting</h3>
+          <p>Prepared and streamlined monthly financial and management reports, improving accuracy and enabling faster decision-making for leadership.</p>
+          <ul style="margin:8px 0 0 0;padding-left:18px;color:var(--muted);font-size:0.98rem;line-height:1.5;">
+            <li>Reduced reporting turnaround time by 40%</li>
+            <li>Enabled leadership to make data-driven decisions within 24 hours of month-end</li>
+            <li>Improved accuracy of financial statements to 99.5%</li>
+          </ul>
         </div>
       </div>
-      <div class="project">
-        <div class="thumb"><img src="https://images.unsplash.com/photo-1554224154-22dec7ec8818?q=80&w=1200&auto=format&fit=crop" alt="Budget Planning" loading="lazy"></div>
-        <div class="project-content">
-          <div class="meta">Budgeting • Forecasting</div>
-          <h3>Budget Planning & Forecasting</h3>
-          <p>Developed comprehensive budgeting models for multiple departments, improving resource allocation and transparency.</p>
+      <div class="project" style="flex:1 1 0;min-width:0;max-width:360px;">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop" alt="Digital Tools and Record Keeping" loading="lazy"></div>
+        <div class="project-content" style="display:flex;flex-direction:column;height:100%;">
+          <div class="meta">Octagon Africa • Head of Accounts, Insurance Dept.</div>
+          <h3>Insurance Premium Tax Automation</h3>
+          <p>Automated premium tax submissions and improved reporting systems for insurance operations, ensuring compliance and saving time.</p>
+          <ul style="margin:8px 0 0 0;padding-left:18px;color:var(--muted);font-size:0.98rem;line-height:1.5;">
+            <li>Cut tax submission errors to less than 0.5%</li>
+            <li>Saved 20+ hours per month through automation</li>
+            <li>Ensured 100% compliance with regulatory deadlines</li>
+          </ul>
         </div>
       </div>
-      <div class="project">
-        <div class="thumb"><img src="https://images.unsplash.com/photo-1556761175-129418cb2dfe?q=80&w=1200&auto=format&fit=crop" alt="Operational Efficiency" loading="lazy"></div>
-        <div class="project-content">
-          <div class="meta">Process Improvement</div>
-          <h3>Operational Efficiency Project</h3>
-          <p>Optimized workflows and implemented financial controls that reduced overhead by 15% annually.</p>
+      <div class="project" style="flex:1 1 0;min-width:0;max-width:360px;">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?q=80&w=1200&auto=format&fit=crop" alt="Audit Tools and Records" loading="lazy"></div>
+        <div class="project-content" style="display:flex;flex-direction:column;height:100%;">
+          <div class="meta">Shift Auto Ambulance Ltd • Head Of Accounting</div>
+          <h3>Internal Controls & Audit Facilitation</h3>
+          <p>Implemented robust internal controls and led audit facilitation, strengthening financial integrity and team performance.</p>
+          <ul style="margin:8px 0 0 0;padding-left:18px;color:var(--muted);font-size:0.98rem;line-height:1.5;">
+            <li>Reduced audit findings by 60% year-over-year</li>
+            <li>Improved team performance scores by 30%</li>
+            <li>Strengthened internal controls, resulting in zero compliance penalties</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="fade-in container">
-    <h2>Contact Me</h2>
-    <div class="contact-grid">
-      <div class="contact-info card">
+  <section id="contact" class="fade-in slide-section container">
+    
+    <h2 style="text-align:center;">Contact Me</h2>
+    <div class="contact-grid" style="justify-content:center;align-items:center;display:flex;flex-direction:column;">
+      <div class="contact-info card" style="margin:0 auto;text-align:center;max-width:420px;">
         <h3>Let's connect</h3>
         <p>I'm open to roles, collaborations, and consulting opportunities. Share a brief message and I'll respond within 48 hours.</p>
         <ul class="contact-list">
@@ -458,17 +518,7 @@
           <li>💼 <a href="https://www.linkedin.com/in/naomi-joy-kariuki/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
           <li>🐦 <a href="https://twitter.com/your-handle" target="_blank" rel="noopener noreferrer">Twitter</a></li>
         </ul>
-        <p style="margin-top:12px;color:var(--muted);font-size:0.95rem"><strong>Tip:</strong> Attach screenshots or links when discussing projects.</p>
-      </div>
-
-      <div class="contact-form">
-        <form action="mailto:joy.kariuki91@gmail.com" method="post" enctype="text/plain" aria-label="Contact form">
-          <div class="input-group"><span class="icon">👤</span><input type="text" name="name" placeholder="Your Name" required aria-label="Name"></div>
-          <div class="input-group"><span class="icon">✉️</span><input type="email" name="email" placeholder="Your Email" required aria-label="Email"></div>
-          <div class="input-group"><span class="icon">💬</span><textarea name="message" placeholder="Your Message" required aria-label="Message"></textarea></div>
-          <button class="btn" type="submit">Send Message</button>
-          <div class="note">Response time: usually within 48 hours.</div>
-        </form>
+        <button class="cta" style="margin-top:18px;" onclick="window.location.href='mailto:joy.kariuki91@gmail.com?subject=Inquiry%20from%20Portfolio%20Website&body=Hi%20Naomi%2C%0A%0AI%20am%20interested%20in%20connecting%20with%20you%20regarding%20your%20finance%20and%20operations%20expertise.%20Please%20let%20me%20know%20how%20we%20can%20collaborate.%0A%0AThank%20you!';">Send Email</button>
       </div>
     </div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -489,13 +539,22 @@
   </div>
 
   <!-- Footer -->
-  <footer class="fade-in">
+  <footer>
     <div class="container" style="text-align:center">
       <div style="color:var(--muted)">&copy; 2026 Naomi Joy Kariuki</div>
     </div>
   </footer>
 
   <script>
+    // Centralized social links
+    const LINKEDIN_URL = "https://www.linkedin.com/in/naomi-joy-kariuki/";
+    const TWITTER_URL = "https://twitter.com/your-handle";
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update all LinkedIn links
+      document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = LINKEDIN_URL);
+      // Update all Twitter links
+      document.querySelectorAll('a[href*="twitter.com"]').forEach(a => a.href = TWITTER_URL);
+    });
     // Typed subtitle (smoother, reserve width to prevent jumps)
     (function(){
       const el = document.getElementById('subtitle');
@@ -546,21 +605,25 @@
       setTimeout(tick, 300);
     })();
 
-    // Staggered reveal on scroll
+    // Staggered reveal on scroll + custom slide for contact-info
+    // Staggered reveal on scroll + slide for all sections
     (function(){
-      const faders = document.querySelectorAll('.fade-in');
-      const observer = new IntersectionObserver((entries, obs) => {
+      const sliders = document.querySelectorAll('.slide-section');
+      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if(entry.isIntersecting){
             entry.target.classList.add('in-view');
+            entry.target.classList.remove('out-view');
             // reveal children with a slight stagger
             const children = entry.target.querySelectorAll('.skill, .project, .card, .exp-card, .hero-left, .hero-right');
             children.forEach((c,i)=>{ setTimeout(()=>c.classList && c.classList.add('in-view'), i*80); });
-            obs.unobserve(entry.target);
+          } else {
+            entry.target.classList.remove('in-view');
+            entry.target.classList.add('out-view');
           }
         });
       }, {threshold: 0.12, rootMargin: '0px 0px -50px 0px'});
-      faders.forEach(f => observer.observe(f));
+      sliders.forEach(s => observer.observe(s));
     })();
 
     // Sticky header: auto-hide when scrolling down, reveal (sticky) when scrolling up
@@ -701,9 +764,12 @@
           function frame(now){
             const progress = Math.min((now - start)/duration, 1);
             const value = Math.floor(progress * target);
-            el.textContent = value;
-            if(progress < 1) requestAnimationFrame(frame);
-            else el.textContent = target;
+            if(progress < 1) {
+              el.textContent = value;
+              requestAnimationFrame(frame);
+            } else {
+              el.textContent = target + '+';
+            }
           }
           requestAnimationFrame(frame);
         }
